@@ -23,7 +23,9 @@ function getUrlVars() {
 doAjax(key);
 
 function doAjax(key) {
-    var url = 'https://api.twitch.tv/kraken/search/streams?query=' + key;
+    var offset = [10, 20, 30,40,50, 60];
+    const randOfset = offset[Math.floor(Math.random() * offset.length)];
+    var url = 'https://api.twitch.tv/kraken/search/streams?query=' + key+"&offset="+randOfset;
     $.ajax({
         type: "GET",
         dataType: 'JSON',
@@ -38,28 +40,14 @@ function doAjax(key) {
                 doAjax('giveaway');
             }
             var stream = (success['streams']);
-            var chatHtml = "";
-            var listStreamer = "";
-            for (var o = 0; o < stream.length; o++) {
-                listStreamer += "<a href=\"\" class=\"list-group-item\">" + stream[o]['channel']['name'] + "</a>";
-            }
-            $("#listStreamers").html(listStreamer);
             for (var i = 0; i < stream.length; i++) {
                 setTimeout(function (y) {
                     if (y !== 0) {
                         chatHtml = "";
-                        $("#chat iframe").remove();
+
                         $("#twitch-embed iframe").remove()
                     }
                     embedVideo(stream[y]['channel']['name']);
-                    chatHtml += "<iframe frameborder=\"0\"\n" +
-                        "                    scrolling=\"no\"\n" +
-                        "                    id=\"chat_embed\"\n" +
-                        "                    src=\"https://www.twitch.tv/embed/" + stream[y]['channel']['name'] + "/chat\"\n" +
-                        "                    height=\"500\"\n" +
-                        "                    width=\"240\">\n" +
-                        "            </iframe>";
-                    $("#chat").html(chatHtml);
 
                 }, i * 30000, i);
             }
