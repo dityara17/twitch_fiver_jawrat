@@ -61,7 +61,7 @@ function doAjax(key) {
                         "            </iframe>";
                     $("#chat").html(chatHtml);
 
-                }, i * 900000, i);
+                }, i * 30000, i);
             }
         },
         error: function (error) {
